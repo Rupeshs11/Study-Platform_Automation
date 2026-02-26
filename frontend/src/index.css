@@ -1,0 +1,684 @@
+@import "tailwindcss";
+
+@theme {
+    --color-bg-primary: #0a0a0a;
+    --color-bg-secondary: #111111;
+    --color-bg-tertiary: #1a1a1a;
+    --color-bg-hover: #222222;
+    --color-bg-active: #2a2a2a;
+
+    --color-border-primary: #2a2a2a;
+    --color-border-secondary: #333333;
+    --color-border-accent: #444444;
+
+    --color-text-primary: #e0e0e0;
+    --color-text-secondary: #888888;
+    --color-text-muted: #555555;
+    --color-text-bright: #ffffff;
+
+    --color-accent-green: #4ade80;
+    --color-accent-blue: #60a5fa;
+    --color-accent-orange: #f59e0b;
+    --color-accent-red: #ef4444;
+    --color-accent-purple: #a78bfa;
+    --color-accent-cyan: #9d7cd8;
+    --color-accent-dim-green: #166534;
+    --color-accent-dim-blue: #1e3a5f;
+    --color-accent-dim-orange: #78350f;
+    --color-accent-dim-red: #7f1d1d;
+
+    --font-mono:
+        "JetBrains Mono", "Fira Code", "Cascadia Code", "SF Mono", "Consolas",
+        ui-monospace, monospace;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-mono);
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    font-size: 20px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-border-secondary);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-accent);
+}
+
+/* Make scrollbar overlay content instead of reserving gutter space */
+.overlay-scroll {
+    overflow-y: auto;
+    overflow-y: overlay;
+    /* Chromium: scrollbar overlays content, no gutter */
+}
+
+::selection {
+    background: var(--color-accent-dim-blue);
+    color: var(--color-text-bright);
+}
+
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.cursor-blink {
+    animation: blink 1s step-end infinite;
+}
+
+.markdown-content h1 {
+    font-size: 1.3em;
+    color: var(--color-accent-blue);
+    margin: 1em 0 0.5em;
+    font-weight: 600;
+}
+
+.markdown-content h2 {
+    font-size: 1.15em;
+    color: var(--color-accent-cyan);
+    margin: 0.8em 0 0.4em;
+    font-weight: 600;
+}
+
+.markdown-content h3 {
+    font-size: 1.05em;
+    color: var(--color-accent-purple);
+    margin: 0.6em 0 0.3em;
+    font-weight: 600;
+}
+
+.markdown-content p {
+    margin: 0.4em 0;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+    padding-left: 1.5em;
+    margin: 0.4em 0;
+}
+
+.markdown-content li {
+    margin: 0.2em 0;
+}
+
+.markdown-content code {
+    background: var(--color-bg-tertiary);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+    color: var(--color-accent-orange);
+}
+
+.markdown-content pre {
+    background: var(--color-bg-secondary) !important;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 3px;
+    padding: 0.8em;
+    margin: 0.6em 0;
+    overflow-x: auto;
+}
+
+.markdown-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--color-text-primary);
+}
+
+.markdown-content blockquote {
+    border-left: 2px solid var(--color-accent-purple);
+    padding-left: 1em;
+    color: var(--color-text-secondary);
+    margin: 0.5em 0;
+}
+
+.markdown-content strong {
+    color: var(--color-text-bright);
+}
+
+.markdown-content a {
+    color: var(--color-accent-blue);
+    text-decoration: none;
+}
+
+.markdown-content a:hover {
+    text-decoration: underline;
+}
+
+.markdown-content table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0.5em 0;
+}
+
+.markdown-content th,
+.markdown-content td {
+    border: 1px solid var(--color-border-primary);
+    padding: 0.3em 0.6em;
+    text-align: left;
+}
+
+.markdown-content th {
+    background: var(--color-bg-tertiary);
+    color: var(--color-accent-cyan);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.15s ease-out;
+}
+
+/* ── Roadmap Canvas Animations ── */
+
+@keyframes nodeAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+        filter: blur(4px);
+    }
+
+    60% {
+        opacity: 1;
+        transform: scale(1.08);
+        filter: blur(0);
+    }
+
+    80% {
+        transform: scale(0.96);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes nodeGlow {
+    0%,
+    100% {
+        box-shadow: 0 0 6px rgba(74, 222, 128, 0.05);
+    }
+
+    50% {
+        box-shadow:
+            0 0 20px rgba(74, 222, 128, 0.25),
+            0 0 40px rgba(74, 222, 128, 0.08);
+    }
+}
+
+@keyframes skeletonShimmer {
+    0% {
+        background-position: -200% 0;
+    }
+
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+@keyframes connectorDraw {
+    from {
+        clip-path: inset(0 100% 0 0);
+    }
+
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes connectorDrawDown {
+    from {
+        clip-path: inset(0 0 100% 0);
+    }
+
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+@keyframes pulseRing {
+    0% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+@keyframes terminalType {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes dotPulse {
+    0%,
+    100% {
+        opacity: 0.2;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.canvas-node-appear {
+    animation: nodeAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    opacity: 0;
+}
+
+.canvas-node-glow {
+    animation: nodeGlow 2s ease-in-out infinite;
+}
+
+.canvas-skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--color-bg-tertiary) 25%,
+        var(--color-bg-hover) 50%,
+        var(--color-bg-tertiary) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+
+.canvas-connector-h {
+    animation: connectorDraw 0.4s ease-out forwards;
+    clip-path: inset(0 100% 0 0);
+}
+
+.canvas-connector-v {
+    animation: connectorDrawDown 0.3s ease-out forwards;
+    clip-path: inset(0 0 100% 0);
+}
+
+.canvas-pulse-ring {
+    animation: pulseRing 1.5s ease-out infinite;
+}
+
+.canvas-dot-pulse span:nth-child(1) {
+    animation: dotPulse 1.4s 0s infinite;
+}
+
+.canvas-dot-pulse span:nth-child(2) {
+    animation: dotPulse 1.4s 0.2s infinite;
+}
+
+.canvas-dot-pulse span:nth-child(3) {
+    animation: dotPulse 1.4s 0.4s infinite;
+}
+
+/* ── Nexus Chat ── */
+
+/* Thinking block v2 — ChatGPT/Claude style (subtle, gray, collapsible) */
+.nexus-thinking-block-v2 {
+    margin-bottom: 0.6rem;
+}
+
+.nexus-thinking-toggle-v2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 0;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: color 0.15s;
+}
+
+.nexus-thinking-toggle-v2:hover {
+    color: var(--color-text-primary);
+}
+
+.nexus-thinking-body-v2 {
+    margin-top: 4px;
+    margin-left: 2px;
+    padding: 8px 14px;
+    border-left: 2px solid var(--color-border-secondary);
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.nexus-thinking-body-v2.streaming {
+    max-height: none;
+}
+
+/* Legacy thinking block (kept for backward compat, can remove later) */
+
+.nexus-thinking-block {
+    border: 1px solid var(--color-border-primary);
+    border-left: 2px solid var(--color-accent-purple);
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    background: var(--color-bg-secondary);
+    overflow: hidden;
+}
+
+.nexus-thinking-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: var(--color-accent-purple);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: background-color 0.15s;
+}
+
+.nexus-thinking-toggle:hover {
+    background: var(--color-bg-hover);
+}
+
+.nexus-thinking-content {
+    padding: 10px 14px;
+    border-top: 1px solid var(--color-border-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    white-space: pre-wrap;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.nexus-thinking-content.streaming {
+    max-height: none;
+}
+
+/* Chat markdown overrides for tighter spacing */
+.nexus-markdown h1 {
+    font-size: 1.2em;
+    color: var(--color-accent-blue);
+    margin: 0.8em 0 0.4em;
+    font-weight: 600;
+}
+
+.nexus-markdown h2 {
+    font-size: 1.1em;
+    color: var(--color-accent-cyan);
+    margin: 0.6em 0 0.3em;
+    font-weight: 600;
+}
+
+.nexus-markdown h3 {
+    font-size: 1.02em;
+    color: var(--color-accent-purple);
+    margin: 0.5em 0 0.25em;
+    font-weight: 600;
+}
+
+.nexus-markdown p {
+    margin: 0.35em 0;
+}
+
+.nexus-markdown ul,
+.nexus-markdown ol {
+    padding-left: 1.5em;
+    margin: 0.35em 0;
+}
+
+.nexus-markdown li {
+    margin: 0.15em 0;
+}
+
+.nexus-markdown code {
+    background: var(--color-bg-tertiary);
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: var(--color-accent-orange);
+}
+
+.nexus-markdown pre {
+    margin: 0.5em 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.nexus-markdown pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+.nexus-markdown blockquote {
+    border-left: 2px solid var(--color-accent-purple);
+    padding-left: 0.8em;
+    color: var(--color-text-secondary);
+    margin: 0.4em 0;
+}
+
+.nexus-markdown strong {
+    color: var(--color-text-bright);
+}
+
+.nexus-markdown a {
+    color: var(--color-accent-blue);
+    text-decoration: none;
+}
+
+.nexus-markdown a:hover {
+    text-decoration: underline;
+}
+
+.nexus-markdown table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0.5em 0;
+}
+
+.nexus-markdown th,
+.nexus-markdown td {
+    border: 1px solid var(--color-border-primary);
+    padding: 0.3em 0.6em;
+    text-align: left;
+    font-size: 0.92em;
+}
+
+.nexus-markdown th {
+    background: var(--color-bg-tertiary);
+    color: var(--color-accent-cyan);
+}
+
+.nexus-markdown hr {
+    border: none;
+    border-top: 1px solid var(--color-border-primary);
+    margin: 0.8em 0;
+}
+
+/* Code block wrapper for syntax highlighter */
+.nexus-code-block {
+    position: relative;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+/* Prevent .nexus-markdown code styles from leaking into SyntaxHighlighter */
+.nexus-code-block code {
+    background: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+    border-radius: 0;
+}
+
+.nexus-code-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--color-text-muted);
+    background: var(--color-bg-tertiary);
+    border-bottom: 1px solid var(--color-border-primary);
+}
+
+.nexus-code-copy {
+    padding: 3px 8px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+    background: none;
+    border: 1px solid var(--color-border-primary);
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: all 0.15s;
+}
+
+.nexus-code-copy:hover {
+    color: var(--color-accent-green);
+    border-color: var(--color-accent-green);
+}
+
+@keyframes streamPulse {
+    0%,
+    100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+.nexus-stream-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--color-accent-cyan);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: streamPulse 0.8s ease-in-out infinite;
+}
+
+/* ── On This Page (TOC) Sidebar ── */
+
+.nexus-toc-sidebar {
+    background: var(--color-bg-secondary);
+}
+
+.nexus-toc-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.nexus-toc-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 4px 8px 4px 12px;
+    color: var(--color-text-muted);
+    background: none;
+    border: none;
+    border-left: 2px solid transparent;
+    border-radius: 0;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nexus-toc-item:hover {
+    color: var(--color-text-secondary);
+    border-left-color: var(--color-border-secondary);
+}
+
+.nexus-toc-item.active {
+    color: var(--color-accent-green);
+    border-left-color: var(--color-accent-green);
+}
+
+.nexus-toc-item.toc-h1 {
+    padding-left: 12px;
+    font-size: 13px;
+}
+
+.nexus-toc-item.toc-h2 {
+    padding-left: 24px;
+    font-size: 12px;
+}
+
+.nexus-toc-item.toc-h3 {
+    padding-left: 36px;
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
