@@ -1,0 +1,60 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: study-platform-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: studyplatform
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - study-platform-network
+
+
+  redis:
+    image: redis:7-alpine
+    container_name: study-platform-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - study-platform-network
+
+  backend:
+    build: ./backend
+    container_name: study-platform-backend
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/studyplatform?authSource=admin
+      SERVER_PORT: 8080
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+    networks:
+      - study-platform-network
+
+  frontend:
+    build: ./frontend
+    container_name: study-platform-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - study-platform-network
+
+volumes:
+  mongodb_data:
+  redis_data:
+
+networks:
+  study-platform-network:
+    driver: bridge
