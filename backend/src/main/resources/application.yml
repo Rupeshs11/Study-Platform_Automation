@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: study-platform
+  
+  config:
+    import: optional:file:.env[.properties]
+  
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/studyplatform}
+      auto-index-creation: true
+
+server:
+  port: ${SERVER_PORT:8080}
+  servlet:
+    context-path: /api
+
+# JWT Configuration
+jwt:
+  # Base64 encoded secret (decode to get actual key)
+  secret: ${JWT_SECRET:bXktc3VwZXItc2VjcmV0LWp3dC1rZXktZm9yLXN0dWR5LXBsYXRmb3JtLWRldmVsb3BtZW50}
+  expiration: ${JWT_EXPIRATION:86400000}  # 24 hours in milliseconds
+
+# Logging
+logging:
+  level:
+    com.study: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# Async request timeout for SSE streaming (5 minutes)
+spring.mvc.async.request-timeout: 300000
+
+# CORS is configured in SecurityConfig.java
+
+# NVIDIA AI Configuration
+nvidia:
+  api:
+    key: ${NVIDIA_API_KEY:}
+    base-url: ${NVIDIA_BASE_URL:https://integrate.api.nvidia.com/v1}
+    model: ${NVIDIA_MODEL:minimaxai/minimax-m2.1}
+    timeout: ${NVIDIA_TIMEOUT:300}

@@ -1,0 +1,82 @@
+{
+  "defaultModel": "qwen/qwen3-235b-a22b",
+  "models": [
+    {
+      "id": "nvidia/llama-3.1-nemotron-ultra-253b-v1",
+      "name": "Nemotron Ultra 253B",
+      "provider": "NVIDIA",
+      "description": "253B MoE — Top accuracy for science, math & coding",
+      "maxTokens": 16384,
+      "supportsStreaming": true,
+      "supportsThinking": true,
+      "category": "reasoning",
+      "tags": ["reasoning", "science", "math", "253B"]
+    },
+    {
+      "id": "qwen/qwen3-235b-a22b",
+      "name": "Qwen3 235B",
+      "provider": "Qwen",
+      "description": "235B MoE (22B active) — Hybrid thinking, multilingual",
+      "maxTokens": 16384,
+      "supportsStreaming": true,
+      "supportsThinking": true,
+      "category": "reasoning",
+      "tags": ["reasoning", "multilingual", "235B"]
+    },
+    {
+      "id": "nvidia/nemotron-3-nano-30b-a3b",
+      "name": "Nemotron 3 Nano 30B",
+      "provider": "NVIDIA",
+      "description": "30B MoE (3B active) — 1M context, ultra-efficient reasoning",
+      "maxTokens": 16384,
+      "supportsStreaming": true,
+      "supportsThinking": true,
+      "category": "reasoning",
+      "tags": ["efficient", "1M-context", "reasoning", "30B"]
+    },
+    {
+      "id": "openai/gpt-oss-120b",
+      "name": "GPT-OSS 120B",
+      "provider": "OpenAI",
+      "description": "120B MoE — Open-source, efficient reasoning & math",
+      "maxTokens": 16384,
+      "supportsStreaming": true,
+      "supportsThinking": false,
+      "category": "general",
+      "tags": ["open-source", "math", "reasoning", "120B"]
+    },
+    {
+      "id": "meta/llama-3.1-405b-instruct",
+      "name": "Llama 3.1 405B",
+      "provider": "Meta",
+      "description": "405B Dense — Largest open-source dense model",
+      "maxTokens": 16384,
+      "supportsStreaming": true,
+      "supportsThinking": false,
+      "category": "general",
+      "tags": ["open-source", "large", "405B"]
+    },
+    {
+      "id": "meta/llama-3.3-70b-instruct",
+      "name": "Llama 3.3 70B",
+      "provider": "Meta",
+      "description": "70B Dense — Best value, fast with strong capabilities",
+      "maxTokens": 16384,
+      "supportsStreaming": true,
+      "supportsThinking": false,
+      "category": "general",
+      "tags": ["open-source", "fast", "70B"]
+    },
+    {
+      "id": "mistralai/devstral-2-123b-instruct-2512",
+      "name": "Devstral 2 123B",
+      "provider": "Mistral AI",
+      "description": "123B — Code-specialized with 256K context window",
+      "maxTokens": 16384,
+      "supportsStreaming": true,
+      "supportsThinking": false,
+      "category": "coding",
+      "tags": ["coding", "256K-context", "123B"]
+    }
+  ]
+}
