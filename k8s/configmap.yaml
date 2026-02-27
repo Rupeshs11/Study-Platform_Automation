@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: study-platform-config
+  namespace: study-platform
+  labels:
+    app: study-platform
+data:
+  # Server Configuration
+  SERVER_PORT: "8080"
+  
+  # MongoDB Configuration
+  MONGO_INITDB_DATABASE: "studyplatform"
+  
+  # NVIDIA AI Configuration
+  NVIDIA_BASE_URL: "https://integrate.api.nvidia.com/v1"
+  NVIDIA_MODEL: "minimaxai/minimax-m2.1"
+  NVIDIA_TIMEOUT: "300"
+  
+  # JWT Configuration
+  JWT_EXPIRATION: "86400000"

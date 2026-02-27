@@ -1,0 +1,118 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: study-platform
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: study-platform-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: study-platform-config
+                  key: SERVER_PORT
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: study-platform-secrets
+                  key: MONGODB_URI
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: study-platform-secrets
+                  key: JWT_SECRET
+            - name: JWT_EXPIRATION
+              valueFrom:
+                configMapKeyRef:
+                  name: study-platform-config
+                  key: JWT_EXPIRATION
+            - name: NVIDIA_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: study-platform-secrets
+                  key: NVIDIA_API_KEY
+            - name: NVIDIA_BASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: study-platform-config
+                  key: NVIDIA_BASE_URL
+            - name: NVIDIA_MODEL
+              valueFrom:
+                configMapKeyRef:
+                  name: study-platform-config
+                  key: NVIDIA_MODEL
+            - name: NVIDIA_TIMEOUT
+              valueFrom:
+                configMapKeyRef:
+                  name: study-platform-config
+                  key: NVIDIA_TIMEOUT
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+      initContainers:
+        - name: wait-for-mongodb
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              until nc -z mongodb-service 27017; do
+                echo "Waiting for MongoDB..."
+                sleep 2
+              done
+              echo "MongoDB is ready!"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: study-platform
+  labels:
+    app: backend
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: backend
