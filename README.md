@@ -7,7 +7,7 @@ AI-powered learning platform that generates personalized study roadmaps based on
 - **Backend**: Spring Boot 3.2, Java 21, MongoDB
 - **Frontend**: React 18, TypeScript, Vite, TailwindCSS
 - **AI**: NVIDIA API (GLM model)
-- **Infra**: Docker (MongoDB, Redis)
+- **Infra**: Docker, Kubernetes, MongoDB, Redis
 
 ## Quick Start
 
@@ -60,6 +60,18 @@ study-platform/
 │       ├── components/    # UI components
 │       ├── api/           # API client
 │       └── context/       # Auth, state
+├── k8s/               # Kubernetes manifests
+│   ├── namespace.yaml
+│   ├── configmap.yaml
+│   ├── secrets.yaml
+│   ├── mongodb-statefulset.yaml
+│   ├── redis-deployment.yaml
+│   ├── backend-deployment.yaml
+│   ├── frontend-deployment.yaml
+│   ├── ingress.yaml
+│   ├── hpa.yaml
+│   └── network-policy.yaml
+├── Testing/           # API test scripts
 └── docker-compose.yml # MongoDB, Redis
 ```
 
@@ -77,3 +89,24 @@ Backend (`.env`):
 ```
 NVIDIA_API_KEY=your_key_here
 ```
+
+## Kubernetes Deployment
+
+Deploy to Kubernetes using the manifests in the `k8s/` directory:
+
+```bash
+# Create namespace and apply configs
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/configmap.yaml -f k8s/secrets.yaml
+
+# Deploy databases
+kubectl apply -f k8s/mongodb-statefulset.yaml -f k8s/redis-deployment.yaml
+
+# Deploy application
+kubectl apply -f k8s/backend-deployment.yaml -f k8s/frontend-deployment.yaml
+
+# Optional: Ingress and autoscaling
+kubectl apply -f k8s/ingress.yaml -f k8s/hpa.yaml
+```
+
+**Note:** Update `k8s/secrets.yaml` with your actual credentials before deploying. See [k8s/README.md](k8s/README.md) for detailed instructions.
